@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shelf Spacing Calculator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Shelf Spacing">
+  <link rel="apple-touch-icon" href="icon192.png">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>📐 Shelf Spacing Calculator</h1>
+    <p class="subtitle">Offline, fast, and accurate — designed for “middle shelves only”.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Inputs</h2>
+      <div class="grid">
+        <label>
+          Internal height (<span class="unit-label">mm</span>)
+          <input type="number" id="height" inputmode="decimal" step="any" placeholder="e.g., 1704">
+        </label>
+        <label>
+          Shelf thickness (<span class="unit-label">mm</span>)
+          <input type="number" id="thickness" inputmode="decimal" step="any" placeholder="e.g., 18">
+        </label>
+        <label>
+          Number of shelves
+          <input type="number" id="count" inputmode="numeric" min="1" step="1" placeholder="e.g., 4">
+        </label>
+        <label>
+          Units
+          <select id="units">
+            <option value="mm">Millimetres (mm)</option>
+            <option value="in">Inches (in)</option>
+          </select>
+        </label>
+        <label>
+          Precision
+          <select id="precision">
+            <option value="1">0.1</option>
+            <option value="2" selected>0.01</option>
+            <option value="0">1</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mode">
+        <label class="radio">
+          <input type="radio" name="mode" value="middle" checked>
+          <span>Middle shelves only (no shelf at top or bottom). Equal gap between shelves and at top/bottom.</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="calcBtn">Calculate</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Results</h2>
+      <div id="results" class="results">
+        <p class="muted">Enter values and tap <strong>Calculate</strong>.</p>
+      </div>
+      <div class="actions">
+        <button id="copyBtn" class="secondary" disabled>Copy Summary</button>
+        <button id="pngBtn" class="secondary" disabled>Download Drill Template (PNG)</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <p>For internal height <code>H</code>, shelf thickness <code>t</code>, and number of shelves <code>n</code>:</p>
+      <ul>
+        <li><strong>Equal gap</strong> (top, bottom, and between shelves): <code>g = (H - n·t) / (n + 1)</code></li>
+        <li><strong>Bottom of shelf i</strong> from bottom: <code>bottomᵢ = g·i + t·(i-1)</code></li>
+        <li><strong>Centre of shelf i</strong> from bottom: <code>centreᵢ = g·i + t·(i - 0.5)</code></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>Install to Home Screen to use offline. No data leaves your device.</p>
+  </footer>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
